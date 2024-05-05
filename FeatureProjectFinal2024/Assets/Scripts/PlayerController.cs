@@ -23,8 +23,28 @@ public class PlayerController : MonoBehaviour
     // damage that the player will do
     public int damage = 10;
 
+    // cooldown until you can use the ability again
+    public float cooldown;
+
+    // first player ability
+    public KeyCode ability1 = KeyCode.E;
+    public int radius1 = 2;
+
+    // second player ability
+    public KeyCode ability2 = KeyCode.Q;
+    public int radius2 = 5;
+
     // inputaction to tell which keys to press
     public FeatureProjectFinal2024 controls;
+
+    Rigidbody enemyBody;
+
+    public Transform enemy;
+
+    public float pullRange;
+    public float pullInt;
+    public float distToEn;
+    Vector3 pullForce;
 
     // the move direction for player across vector2
     Vector2 moveDir = Vector2.zero;
@@ -64,7 +84,8 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // gets the rigidboy for the enemy
+        enemyBody = enemy.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -72,6 +93,14 @@ public class PlayerController : MonoBehaviour
     {
         // pulls the WASD value
         moveDir = movement.ReadValue<Vector2>();
+
+        // pull mechanic
+        distToEn = Vector3.Distance(enemy.position, transform.position);
+        if (distToEn < pullRange)
+        {
+            pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
+            enemyBody.AddForce(pullForce, ForceMode.Force);
+        }
     }
 
     private void FixedUpdate()
