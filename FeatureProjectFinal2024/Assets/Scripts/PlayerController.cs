@@ -10,17 +10,18 @@ using UnityEngine.InputSystem;
 /// Controls the player, specifically movement and attack.
 /// 
 /// 1. Movement (speed included)
-/// 2. Jump
 /// 2. AOE attack including a jump (cooldown included)
 /// 3. Bigger AOE attack (cooldown included)
 /// 4. Auto attack
-/// 5. Gliding
 /// </summary>
 
 public class PlayerController : MonoBehaviour
 {
     // movement speed of player
     public float speed = 10f;
+
+    // damage that the player will do
+    public int damage = 10;
 
     // inputaction to tell which keys to press
     public FeatureProjectFinal2024 controls;
