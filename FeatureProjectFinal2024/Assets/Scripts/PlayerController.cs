@@ -9,8 +9,10 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Controls the player, specifically movement and attack.
 /// 
-/// 1. Movement (speed included)
+/// 1. Movement (speed included) // DONE
 /// 2. AOE attack including a jump (cooldown included)
+/// -- Starts wth a pull, then player jumps up and comes back down dealing damage
+/// -- No coroutines or waits done, but the pull is done
 /// 3. Bigger AOE attack (cooldown included)
 /// 4. Auto attack
 /// </summary>
@@ -37,10 +39,11 @@ public class PlayerController : MonoBehaviour
     // inputaction to tell which keys to press
     public FeatureProjectFinal2024 controls;
 
+    // enemy rb and transform
     Rigidbody enemyBody;
-
     public Transform enemy;
 
+    // distances/location for the pull mechanic
     public float pullRange;
     public float pullInt;
     public float distToEn;
