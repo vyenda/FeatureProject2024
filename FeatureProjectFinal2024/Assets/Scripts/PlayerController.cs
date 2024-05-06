@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 /* Author: Angeleen Arellano
- * Last Edited: 5/1/2024
+ * Last Edited: 5/5/2024
  */
 /// <summary>
 /// Controls the player, specifically movement and attack.
@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
     private InputAction movement;
     // for firing/auto attacking
     private InputAction fire;
-    
+
     // requirement for inputsystem
     private void OnEnable()
     {
@@ -97,14 +97,46 @@ public class PlayerController : MonoBehaviour
         // pulls the WASD value
         moveDir = movement.ReadValue<Vector2>();
 
-        // pull mechanic
-        distToEn = Vector3.Distance(enemy.position, transform.position);
+        /*distToEn = Vector3.Distance(enemy.position, transform.position);
         if (distToEn < pullRange)
         {
             pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
             enemyBody.AddForce(pullForce, ForceMode.Force);
         }
+        */
     }
+
+    private IEnumerator pullAttack()
+    {
+        distToEn = Vector3.Distance(enemy.position, transform.position);
+        if (distToEn < pullRange)
+        {
+            pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
+            enemyBody.AddForce(pullForce, ForceMode.Force);
+            yield return new WaitForSeconds(.1f);
+        }
+        yield return null;
+    }
+
+    /* NOTE: Will be for the particles of the first attack
+    private IEnumerator attack1Particles()
+    {
+        yield return new WaitForSeconds(0.25f);
+        attack1PartObj.SetActive(true);
+        yield return new WaitForSeconds(5f);
+        attack1PartObj.SetActive(false);
+    }
+    */
+
+    /* NOTE: Will be for the particles of the second attack
+    private IEnumerator attack2Particles()
+    {
+        yield return new WaitForSeconds(0.25f);
+        attack2PartObj.SetActive(true);
+        yield return new WaitForSeconds(15f);
+        attack2PartObj.SetActive(false);
+    }
+    */
 
     private void FixedUpdate()
     {
@@ -114,6 +146,8 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
-        Debug.Log("Fired");
+        StartCoroutine(pullAttack());
+        Debug.Log("pullAttack");
     }
+
 }
