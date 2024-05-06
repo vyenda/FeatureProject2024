@@ -29,12 +29,12 @@ public class PlayerController : MonoBehaviour
     public float cooldown;
 
     // first player ability
-    public KeyCode ability1 = KeyCode.E;
-    public int radius1 = 2;
+    //public KeyCode ability1 = KeyCode.E;
+    //public int radius1 = 2;
 
     // second player ability
-    public KeyCode ability2 = KeyCode.Q;
-    public int radius2 = 5;
+    //public KeyCode ability2 = KeyCode.Q;
+    //public int radius2 = 5;
 
     // inputaction to tell which keys to press
     public FeatureProjectFinal2024 controls;
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour
     private IEnumerator pullAttack()
     {
         distToEn = Vector3.Distance(enemy.position, transform.position);
-        if (distToEn < pullRange)
+        while (distToEn < pullRange)
         {
             pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
             enemyBody.AddForce(pullForce, ForceMode.Force);
@@ -118,7 +118,12 @@ public class PlayerController : MonoBehaviour
         yield return null;
     }
 
-    /* NOTE: Will be for the particles of the first attack
+    private void aoeAttack1()
+    {
+
+    }
+
+    /* NOTE: Will be for the particles of the first attack / Only do if time
     private IEnumerator attack1Particles()
     {
         yield return new WaitForSeconds(0.25f);
@@ -128,7 +133,7 @@ public class PlayerController : MonoBehaviour
     }
     */
 
-    /* NOTE: Will be for the particles of the second attack
+    /* NOTE: Will be for the particles of the second attack / Only do if time
     private IEnumerator attack2Particles()
     {
         yield return new WaitForSeconds(0.25f);
@@ -146,8 +151,18 @@ public class PlayerController : MonoBehaviour
 
     private void Fire(InputAction.CallbackContext context)
     {
-        StartCoroutine(pullAttack());
+        //StartCoroutine(pullAttack());
         Debug.Log("pullAttack");
     }
+
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        EnemyController health = collision.gameObject.GetComponent<EnemyController>();
+        if (health != null)
+        {
+            health.takeDamage(damage);
+        }
+    }
+    */
 
 }

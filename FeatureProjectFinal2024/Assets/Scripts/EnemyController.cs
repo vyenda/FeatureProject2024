@@ -9,17 +9,22 @@ using UnityEngine;
 /// </summary>
 public class EnemyController : MonoBehaviour
 {
+    public static EnemyController instance;
+
+    // enemies health
     public int health = 20;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+    // destorys/"kills" enemy once it's reached 0 or below health
+    public void death()
+    { 
+        if (health <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void takeDamage(int damage)
     {
-        
+        health -= damage;
     }
 }
