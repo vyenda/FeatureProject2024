@@ -9,13 +9,19 @@ using UnityEngine;
 /// </summary>
 public class Attack2 : MonoBehaviour
 {
+    // how much damage attack 2 does
     public int damage = 5;
-    private void OnCollisionEnter(Collision collision)
+
+    private void Start()
     {
-        EnemyController health = collision.gameObject.GetComponent<EnemyController>();
-        if (health != null)
-        {
-            health.takeDamage(damage);
-        }
+        // starts the coroutine for Death2()
+        StartCoroutine(Death2());
+    }
+
+    // destroys the game object once the time is up
+    IEnumerator Death2()
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(gameObject);
     }
 }

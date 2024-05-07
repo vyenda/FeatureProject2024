@@ -8,13 +8,6 @@ using UnityEngine.InputSystem;
  */
 /// <summary>
 /// Controls the player, specifically movement and attack.
-/// 
-/// 1. Movement (speed included) // DONE
-/// 2. AOE attack including a jump (cooldown included)
-/// -- Starts wth a pull, then player jumps up and comes back down dealing damage
-/// -- No coroutines or waits done, but the pull is done
-/// 3. Bigger AOE attack (cooldown included)
-/// 4. Auto attack
 /// </summary>
 
 public class PlayerController : MonoBehaviour
@@ -22,19 +15,8 @@ public class PlayerController : MonoBehaviour
     // movement speed of player
     public float speed = 10f;
 
-    // damage that the player will do
-    public int damage = 10;
-
     // cooldown until you can use the ability again
     public float cooldown;
-
-    // first player ability
-    //public KeyCode ability1 = KeyCode.E;
-    //public int radius1 = 2;
-
-    // second player ability
-    //public KeyCode ability2 = KeyCode.Q;
-    //public int radius2 = 5;
 
     // inputaction to tell which keys to press
     public FeatureProjectFinal2024 controls;
@@ -57,25 +39,26 @@ public class PlayerController : MonoBehaviour
 
     // for movement
     private InputAction movement;
-    // for firing/auto attacking
-    private InputAction fire;
+
+    // points and prefabs for attack 1 and 2
+    public GameObject teleportPoint;
+    public GameObject teleportPoint2;
+    public GameObject attack1P;
+    public GameObject attack2P;
+
+    // bool for the beginning of attack 1
+    public bool pullTrigger = false;
 
     // requirement for inputsystem
     private void OnEnable()
     {
         movement = controls.Player.Move;
         movement.Enable();
-
-        fire = controls.Player.Fire;
-        fire.Enable();
-        // register fire method to the event
-        fire.performed += Fire;
     }
     // requirement for inputsystem
     private void OnDisable()
     {
         movement.Disable();
-        fire.Disable();
     }
 
     private void Awake()
@@ -97,30 +80,64 @@ public class PlayerController : MonoBehaviour
         // pulls the WASD value
         moveDir = movement.ReadValue<Vector2>();
 
-        /*distToEn = Vector3.Distance(enemy.position, transform.position);
-        if (distToEn < pullRange)
+        // starts attack 1 when E is pressed
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
-            enemyBody.AddForce(pullForce, ForceMode.Force);
+            // starts the coroutine, explanation further below
+            StartCoroutine(pullAttack());
+            // turns the pull mechanic on
+            pullTrigger = true;
+            //aoeAttack1();
         }
-        */
+
+        // the pull mechanic, which pulls enemy to the player if they are in range
+        if (pullTrigger)
+        {
+            // makes distToEn equal the position of the enemy
+            distToEn = Vector3.Distance(enemy.position, transform.position);
+            // if distToEn is less than the set pullRange then it starts the pull mechanic
+            if (distToEn < pullRange)
+            {
+                pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
+                enemyBody.AddForce(pullForce, ForceMode.Force);
+            }
+        }
+
+        // starts attack 2 when Q is pressed
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            aoeAttack2();
+        }
+
     }
 
-    private IEnumerator pullAttack()
+    // adds a "timer" to the pull for how long it lasts, and then starts aoeAttack1() when finished
+    IEnumerator pullAttack()
     {
-        distToEn = Vector3.Distance(enemy.position, transform.position);
-        while (distToEn < pullRange)
-        {
-            pullForce = (transform.position - enemy.position).normalized / distToEn * pullInt;
-            enemyBody.AddForce(pullForce, ForceMode.Force);
-            yield return new WaitForSeconds(.1f);
-        }
-        yield return null;
+        // timer for pull attack
+        yield return new WaitForSeconds(1f);
+        // turns pull off
+        pullTrigger = false;
+        // starts attack 1
+        aoeAttack1();
+
+        //yield return new WaitForSeconds(2f);
+        //aoeAttack1();
     }
 
+    // instantiates the prefab for the first attack
     private void aoeAttack1()
     {
+        Instantiate(attack1P, teleportPoint2.transform.position, Quaternion.identity);
+        Debug.Log("Attack1");
 
+    }
+
+    // instanties the prefab for the second attack
+    private void aoeAttack2()
+    {
+        Instantiate(attack2P, teleportPoint.transform.position, Quaternion.identity);
+        Debug.Log("Attack2");
     }
 
     /* NOTE: Will be for the particles of the first attack / Only do if time
@@ -148,21 +165,4 @@ public class PlayerController : MonoBehaviour
         // adds movement and speed to the rigidbody
         rb.velocity = new Vector2(moveDir.x * speed, moveDir.y * speed);
     }
-
-    private void Fire(InputAction.CallbackContext context)
-    {
-        //StartCoroutine(pullAttack());
-        Debug.Log("pullAttack");
-    }
-
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        EnemyController health = collision.gameObject.GetComponent<EnemyController>();
-        if (health != null)
-        {
-            health.takeDamage(damage);
-        }
-    }
-    */
-
 }
