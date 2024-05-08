@@ -81,10 +81,10 @@ public class PlayerController : MonoBehaviour
         // starts attack 1 when E is pressed
         if (Input.GetKeyDown(KeyCode.E))
         {
-            // starts the coroutine, explanation further below
-            StartCoroutine(pullAttack());
             // turns the pull mechanic on
             pullTrigger = true;
+            // starts the coroutine, explanation further below
+            StartCoroutine(pullAttack());
         }
 
         // the pull mechanic, which pulls enemy to the player if they are in range
