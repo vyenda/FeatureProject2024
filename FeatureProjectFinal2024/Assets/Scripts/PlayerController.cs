@@ -67,14 +67,12 @@ public class PlayerController : MonoBehaviour
         controls = new FeatureProjectFinal2024();
     }
 
-    // Start is called before the first frame update
     void Start()
     {
         // gets the rigidboy for the enemy
         enemyBody = enemy.GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         // pulls the WASD value
@@ -87,7 +85,6 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(pullAttack());
             // turns the pull mechanic on
             pullTrigger = true;
-            //aoeAttack1();
         }
 
         // the pull mechanic, which pulls enemy to the player if they are in range
@@ -106,6 +103,8 @@ public class PlayerController : MonoBehaviour
         // starts attack 2 when Q is pressed
         if (Input.GetKeyDown(KeyCode.Q))
         {
+            // starts the coroutine, explanation further below
+            StartCoroutine(consistentDmg());
             aoeAttack2();
         }
 
@@ -120,9 +119,17 @@ public class PlayerController : MonoBehaviour
         pullTrigger = false;
         // starts attack 1
         aoeAttack1();
+    }
 
-        //yield return new WaitForSeconds(2f);
-        //aoeAttack1();
+    IEnumerator consistentDmg()
+    {
+        // does "continuous" damage to the enemy
+        yield return new WaitForSeconds(2f);
+        aoeAttack2();
+        yield return new WaitForSeconds(2f);
+        aoeAttack2();
+        yield return new WaitForSeconds(2f);
+        aoeAttack2();
     }
 
     // instantiates the prefab for the first attack
@@ -139,26 +146,6 @@ public class PlayerController : MonoBehaviour
         Instantiate(attack2P, teleportPoint.transform.position, Quaternion.identity);
         Debug.Log("Attack2");
     }
-
-    /* NOTE: Will be for the particles of the first attack / Only do if time
-    private IEnumerator attack1Particles()
-    {
-        yield return new WaitForSeconds(0.25f);
-        attack1PartObj.SetActive(true);
-        yield return new WaitForSeconds(5f);
-        attack1PartObj.SetActive(false);
-    }
-    */
-
-    /* NOTE: Will be for the particles of the second attack / Only do if time
-    private IEnumerator attack2Particles()
-    {
-        yield return new WaitForSeconds(0.25f);
-        attack2PartObj.SetActive(true);
-        yield return new WaitForSeconds(15f);
-        attack2PartObj.SetActive(false);
-    }
-    */
 
     private void FixedUpdate()
     {

@@ -21,7 +21,7 @@ public class Attack2 : MonoBehaviour
     // destroys the game object once the time is up
     IEnumerator Death2()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         Destroy(gameObject);
     }
 }

@@ -10,15 +10,16 @@ using UnityEngine;
 /// </summary>
 public class EnemyController : MonoBehaviour
 {
-    public static EnemyController instance;
 
     // enemies health
-    public int health = 20;
+    public int health = 30;
 
     private void Update()
     {
         // runs death()
         death();
+
+        //cooldown -= Time.deltaTime;
     }
 
     // sets the game obj false/"kills" enemy once it's reached 0 or below health
