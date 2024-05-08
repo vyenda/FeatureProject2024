@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 /* Author: Angeleen Arellano
- * Last Edited: 5/5/2024
+ * Last Edited: 5/6/2024
  */
 /// <summary>
 /// Dummy for the Player.
@@ -18,8 +18,6 @@ public class EnemyController : MonoBehaviour
     {
         // runs death()
         death();
-
-        //cooldown -= Time.deltaTime;
     }
 
     // sets the game obj false/"kills" enemy once it's reached 0 or below health

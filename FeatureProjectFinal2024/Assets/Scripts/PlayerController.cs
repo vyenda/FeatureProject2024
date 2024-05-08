@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 /* Author: Angeleen Arellano
- * Last Edited: 5/5/2024
+ * Last Edited: 5/7/2024
  */
 /// <summary>
 /// Controls the player, specifically movement and attack.
@@ -117,6 +117,13 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1f);
         // turns pull off
         pullTrigger = false;
+        // pushes the player up
+        transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y + 2, transform.position.z), 2f);
+        yield return new WaitForSeconds(0.2f);
+        Debug.Log("Up");
+        // pushes the player down to original spot
+        transform.position = Vector3.Lerp(transform.position, new Vector3(transform.position.x, transform.position.y - 2, transform.position.z), 2f);
+        Debug.Log("Down");
         // starts attack 1
         aoeAttack1();
     }

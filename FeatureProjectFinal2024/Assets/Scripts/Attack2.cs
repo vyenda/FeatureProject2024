@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /* Author: Angeleen Arellano
- * Last Edited: 5/5/2024
+ * Last Edited: 5/6/2024
  */
 /// <summary>
 /// Attack 2.

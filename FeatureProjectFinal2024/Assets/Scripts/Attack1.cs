@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /* Author: Angeleen Arellano
- * Last Edited: 5/5/2024
+ * Last Edited: 5/6/2024
  */
 /// <summary>
 /// Attack 1.
@@ -18,7 +18,7 @@ public class Attack1 : MonoBehaviour
         StartCoroutine(Death1());
     }
 
-    // destorys the game object once the time is up
+    // destroys the game object once the time is up
     IEnumerator Death1()
     {
         yield return new WaitForSeconds(0.5f);
